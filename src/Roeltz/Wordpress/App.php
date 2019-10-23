@@ -1,6 +1,7 @@
 <?php
 
 namespace Roeltz\Wordpress;
+use Roeltz\Wordpress\HTTP\ActionNotFoundException;
 
 class App {
 
