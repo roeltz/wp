@@ -1,0 +1,12 @@
+{
+	"name": "roeltz/wp",
+	"autoload": {
+		"psr-0": {
+			"Roeltz\\": "src"
+		}
+	},
+	"require": {
+		"roeltz/html": "*"
+	},
+	"minimum-stability": "dev"
+}
