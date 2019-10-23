@@ -1,11 +1,21 @@
 {
 	"name": "roeltz/wp",
+	"license": "MIT",
+	"description": "Utility classes for Admin UI building and custom HTTP routing in Wordpress",
+	"authors": [
+		{
+			"name": "Leonardo Rothe Tagliafico",
+			"email": "leo_rothe@msn.com",
+			"homepage": "http://github.com/roeltz"
+		}
+	],
 	"autoload": {
 		"psr-0": {
 			"Roeltz\\": "src"
 		}
 	},
 	"require": {
+		"php": ">=5.4.0",
 		"roeltz/html": "*"
 	},
 	"minimum-stability": "dev"
