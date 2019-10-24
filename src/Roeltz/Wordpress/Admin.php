@@ -36,4 +36,8 @@ class Admin {
 	function page($action, $menuTitle, $pageTitle = null) {
 		return AdminPage::create($this->app, $action, $menuTitle, $pageTitle);
 	}
+
+	function innerPage($action, $pageTitle) {
+		return AdminPage::createInner($this->app, $action, $pageTitle);
+	}
 }
