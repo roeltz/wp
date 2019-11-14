@@ -16,6 +16,16 @@ class Admin {
 		return strtolower(preg_replace('#[^\w-]#', '-', $action));
 	}
 
+	function actionURL($action, array $args = []) {
+		$url = admin_url("admin.php?page=" . $this->actionToSlug($action));
+
+		if ($args) {
+			$url = add_query_arg($args, $url);
+		}
+
+		return $url;
+	}
+
 	function executeAction($action) {
 		$this->app->loadInit();
 
@@ -33,11 +43,17 @@ class Admin {
 		}
 	}
 
+	function innerPage($action, $pageTitle) {
+		return AdminPage::createInner($this->app, $action, $pageTitle);
+	}
+
 	function page($action, $menuTitle, $pageTitle = null) {
 		return AdminPage::create($this->app, $action, $menuTitle, $pageTitle);
 	}
 
-	function innerPage($action, $pageTitle) {
-		return AdminPage::createInner($this->app, $action, $pageTitle);
+	function redirectAction($action, array $args = []) {
+		$url = $this->actionURL($action, $args);
+		header("Location: $url");
+		exit(0);
 	}
 }

@@ -26,7 +26,7 @@ class HTTP {
 		exit(0);
 	}
 
-	function __constrcut(App $app) {
+	function __construct(App $app) {
 		$this->app = $app;
 	}
 

@@ -3,6 +3,7 @@
 namespace Roeltz\Wordpress\Admin;
 use Pipa\Data\Criteria;
 use Roeltz\HTML\HTML;
+use Roeltz\Interpolate;
 use WP_List_Table;
 
 class AdminTable extends WP_List_Table {
@@ -106,6 +107,15 @@ class AdminTable extends WP_List_Table {
 		return $this;
 	}
 
+	function setPagination($count, $pageSize) {
+		$this->set_pagination_args([
+			"total_items"=>$count,
+			"per_page"=>$this->pageSize
+		]);
+
+		return $this;
+	}
+
 	function viewTypes($param, array $views) {
 		$this->viewsParam = $param;
 		$this->views = $views;
@@ -128,7 +138,7 @@ class AdminTable extends WP_List_Table {
 
 	function column_default($item, $name) {
 		if ($link = @$this->links[$name]) {
-			return HTML::a(fill($link, $item), $item[$name]);
+			return HTML::a(Interpolate::fill($link, $item), $item[$name]);
 		} else {
 			return $item[$name];
 		}

@@ -33,7 +33,7 @@ class Action {
 
 			if ($class) {
 				switch ($class->getName()) {
-					case "Request":
+					case 'Roeltz\Wordpress\HTTP\Request':
 						$value = $request;
 						break;
 				}

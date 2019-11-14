@@ -2,6 +2,7 @@
 
 namespace Roeltz\Wordpress\Admin;
 use Roeltz\HTML\HTML;
+use Roeltz\HTML\HTMLTag;
 
 class AdminForm {
 
@@ -25,11 +26,11 @@ class AdminForm {
 		}
 	}
 
-	function boolField($label, $name, $description = null, $value = 0) {
+	function boolField($label, $name, $value = 0, array $attr = [], $description = null) {
 		return $this->field(
 			$label,
 			HTML::tag("p", [], [
-				$r1 = HTML::radio(["name"=>$name, "id"=>$id1], 1, $value),
+				$r1 = HTML::radio(array_merge($attr, ["name"=>$name, "id"=>$id1]), 1, $value),
 				HTML::label(__("Yes"), $r1),
 				HTML::tag("br"),
 				$r2 = HTML::radio($name, 0, !$value),
@@ -39,19 +40,15 @@ class AdminForm {
 		);
 	}
 
-	function checklistField($label, array $options, $description = null) {
+	function checklistField($label, $name, array $options, array $values = [], array $attr = [], $description = null) {
 		return $this->field(
 			$label,
-			HTML::tag("div", [], array_map(function($option, $name){
-				if (is_array($option)) {
-					list($text, $checked) = $option;
-				} else {
-					$text = $option;
-					$checked = false;
-				}
+			HTML::tag("div", [], array_map(function($option, $value) use($name, $attr, $values){
+				$checked = in_array($value, $values);
+
 				return HTML::tag("p", [], [
-					HTML::label($text)
-						->prepend(HTML::checkbox($name, 1, $checked))
+					HTML::label($option)
+						->prepend(HTML::checkbox(array_merge($attr, ["name"=>$name]), $value, $checked))
 				]);
 			}, $options, array_keys($options))),
 			$description
@@ -69,26 +66,38 @@ class AdminForm {
 		return $this;
 	}
 
-	function selectField($label, $name, array $options, $description = null, $value = null) {
+	function inputField($label, $type, $name, $value = null, array $attr = [], $description = null) {
 		return $this->field(
 			$label,
-			HTML::select($name, $options, $value),
+			HTML::input($type, array_merge($attr, ["name"=>$name, "class"=>"regular-text"]), $value),
 			$description
 		);
 	}
 
-	function textField($label, $name, $description = null, $value = null) {
+	function selectField($label, $name, array $options, $default = null, $value = null, array $attr = [], $description = null) {
+		if ($default) {
+			$options = array_merge([""=>$default], $options);
+		}
+
 		return $this->field(
 			$label,
-			HTML::input("text", ["name"=>$name, "class"=>"regular-text"], $value),
+			HTML::select(array_merge($attr, ["name"=>$name]), $options, $value),
 			$description
 		);
 	}
 
-	function textareaField($label, $name, $description = null, $value = null) {
+	function textField($label, $name, $value = null, array $attr = [], $description = null) {
 		return $this->field(
 			$label,
-			HTML::textarea(["name"=>$name, "class"=>"large-text"], $value),
+			HTML::input("text", array_merge($attr, ["name"=>$name, "class"=>"regular-text"]), $value),
+			$description
+		);
+	}
+
+	function textareaField($label, $name, $value = null, array $attr = [], $description = null) {
+		return $this->field(
+			$label,
+			HTML::textarea(array_merge($attr, ["name"=>$name, "class"=>"large-text"]), $value),
 			$description
 		);
 	}
