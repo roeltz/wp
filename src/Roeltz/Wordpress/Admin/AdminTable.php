@@ -16,6 +16,8 @@ class AdminTable extends WP_List_Table {
 
 	private $callbacks = [];
 
+	private $checkboxCallback;
+
 	private $columns = [];
 
 	private $links = [];
@@ -67,6 +69,12 @@ class AdminTable extends WP_List_Table {
 
 	function itemCallback($fn) {
 		$this->callbacks[] = $fn;
+
+		return $this;
+	}
+
+	function itemCheckboxCallback($fn) {
+		$this->checkboxCallback = $fn;
 
 		return $this;
 	}
@@ -132,8 +140,9 @@ class AdminTable extends WP_List_Table {
 	// Overriden methods
 
 	function column_cb($item) {
-		if ($this->bulkActions && $this->pk)
+		if ($this->bulkActions && $this->pk && (!$this->checkboxCallback || call_user_func($this->checkboxCallback, $item))) {
 			return HTML::checkbox("{$this->pk}[]", $item[$this->pk]);
+		}
 	}
 
 	function column_default($item, $name) {
