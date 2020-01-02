@@ -30,10 +30,10 @@ class AdminForm {
 		return $this->field(
 			$label,
 			HTML::tag("p", [], [
-				$r1 = HTML::radio(array_merge($attr, ["name"=>$name, "id"=>$id1]), 1, $value),
+				$r1 = HTML::radio(array_merge($attr, ["name"=>$name]), 1, $value),
 				HTML::label(__("Yes"), $r1),
 				HTML::tag("br"),
-				$r2 = HTML::radio($name, 0, !$value),
+				$r2 = HTML::radio(array_merge($attr, ["name"=>$name]), 0, !$value),
 				HTML::label(__("No"), $r2)
 			]),
 			$description
