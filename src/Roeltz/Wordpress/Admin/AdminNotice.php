@@ -39,7 +39,7 @@ class AdminNotice {
 	
 	static function put() {
 		if ($page = @$_GET["page"]) {
-			$deferred = $_SESSION["custom-admin-notices"][$page];
+			$deferred = (array) @$_SESSION["custom-admin-notices"][$page];
 	
 			foreach ($deferred as $notice)
 				self::create($notice["class"], $notice["content"]);
