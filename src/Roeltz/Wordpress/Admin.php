@@ -8,16 +8,16 @@ class Admin {
 
 	public $app;
 
+	static function actionToSlug($action) {
+		return strtolower(preg_replace('#[^\w-]#', '-', $action));
+	}
+
 	function __construct(App $app) {
 		$this->app = $app;
 	}
 
-	function actionToSlug($action) {
-		return strtolower(preg_replace('#[^\w-]#', '-', $action));
-	}
-
 	function actionURL($action, array $args = []) {
-		$url = admin_url("admin.php?page=" . $this->actionToSlug($action));
+		$url = admin_url("admin.php?page=" . self::actionToSlug($action));
 
 		if ($args) {
 			$url = add_query_arg($args, $url);

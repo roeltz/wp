@@ -12,13 +12,15 @@ class AdminTable extends WP_List_Table {
 
 	private $pk = "ID";
 
-	private $pageSize = 20;
-
 	private $callbacks = [];
 
 	private $checkboxCallback;
 
 	private $columns = [];
+
+	private $hasCustomPagination = false;
+
+	private $pageSize = 20;
 
 	private $links = [];
 
@@ -116,9 +118,10 @@ class AdminTable extends WP_List_Table {
 	}
 
 	function setPagination($count, $pageSize) {
+		$this->hasCustomPagination = true;
 		$this->set_pagination_args([
 			"total_items"=>$count,
-			"per_page"=>$this->pageSize
+			"per_page"=>$pageSize
 		]);
 
 		return $this;
@@ -209,10 +212,12 @@ class AdminTable extends WP_List_Table {
 			}
 		}
 
-		$this->set_pagination_args([
-			"total_items"=>$count,
-			"per_page"=>$this->pageSize
-		]);
+		if (!$this->hasCustomPagination) {
+			$this->set_pagination_args([
+				"total_items"=>$count,
+				"per_page"=>$this->pageSize
+			]);
+		}
 
 		$this->_column_headers = [$this->get_columns(), [], $this->sortable];
 	}
