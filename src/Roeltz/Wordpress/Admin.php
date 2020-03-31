@@ -26,6 +26,12 @@ class Admin {
 		return $url;
 	}
 
+	function addStylesheet($handle, $path) {
+		add_action("admin_enqueue_scripts", function() use($handle, $path) {
+			wp_enqueue_style($handle, $this->app->url($path));
+		});
+	}
+
 	function executeAction($action) {
 		$this->app->loadInit();
 
