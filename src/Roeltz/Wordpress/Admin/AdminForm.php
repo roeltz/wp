@@ -10,6 +10,8 @@ class AdminForm {
 
 	protected $fields = [];
 
+	protected $isMultipart = false;
+
 	protected $submitText = null;
 
 	static function create($action = "") {
@@ -119,6 +121,10 @@ class AdminForm {
 	function render() {
 		$form = HTML::tag("form", ["method"=>"post", "action"=>$this->action]);
 
+		if ($this->isMultipart) {
+			$form->attr("enctype", "multipart/form-data");
+		}
+
 		$html = $form->renderOpeningTag();
 		$html .= $this->prerender();
 		$html .= $this->renderFields();
@@ -145,6 +151,11 @@ class AdminForm {
 			->child("th", ["scope"=>"row"], [$name])
 			->child("td", [], $elements)
 		;
+	}
+
+	function setMultipart() {
+		$this->isMultipart = true;
+		return $this;
 	}
 
 	function __toString() {
